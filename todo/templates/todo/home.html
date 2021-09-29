@@ -1,0 +1,65 @@
+{% extends 'todo/base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="container   p-5 text-white editable " contenteditable="true" style="overflow-x:hidden; height:100vh;" >
+        <h2 > Getting started </h2>
+
+        <p class="mt-5" >  Organize your tasks into projects</p>
+        
+    </div>    
+    <script src="{% static 'js/detail.js' %}" ></script>
+
+
+{% endblock content %}
+
+
+{% block sidebarTasks %}
+        <h4 class="text-decoration-none text-light p-4 text-center border-bottom"> My Projects </h4>
+
+        {% if not projectCount == 0 %}
+        
+        
+            <div class="" style="overflow-y: scroll !important; 
+            height: 100%; width: 100%;">
+
+                {% for project in projects %}
+                
+                    <a class="border-bottom" >
+                        <button class="btn btn-toggle align-items-center rounded collapsed  btn-primary d-block text-break"  
+                        style="width:100%;word-wrap: break-word;"
+                          data-bs-toggle="collapse" data-bs-target="#dashboard-collapse{{project.id}}" aria-expanded="false">
+                        <i class="fas fa-caret-down "></i>
+                            {{project.title}}
+                        
+                        </button>
+                    </a>
+                    
+                    
+                    <div class="collapse" id="dashboard-collapse{{project.id}}" class="p-0" style="">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal p-0 small">
+                            {% comment %} <li><a href="#" class=" ">Overview</a></li> {% endcomment %}
+                            <li> <a class="text-decoration-none text-light p-4" href="{% url 'todo-newTask' project.title%}"
+                                ><i class="far fa-plus-square"></i> New Task</a
+                            >
+                            </li>
+                            {% for task in project.tasks %}
+                            
+                                <li>
+                                    <a 
+                                    class="text-decoration-none text-light p-4 text-break " 
+                                    style="width:100%;"
+                                    href="{% url 'todo-task' project.title task.id %}">
+                                    {{task}}
+                                    </a>
+                                </li>
+                            
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+
+{% endblock sidebarTasks %}
